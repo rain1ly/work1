@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高校实验室安全规程问答</title>
+<style>
+  :root{
+    --bg:#f6f5f2; --card:#fff; --ink:#232220; --ink2:#5c5a55; --ink3:#8a877f;
+    --line:#e3e1da; --info:#185fa5; --info-bg:#e6f1fb; --warn:#854f0b; --warn-bg:#faeeda;
+    --ok:#0f6e56; --ok-bg:#e1f5ee;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:14px;line-height:1.7;}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 60px;}
+  header{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:20px;}
+  h1{font-size:20px;margin:0 0 4px;font-weight:600;}
+  .sub{font-size:13px;color:var(--ink3);}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;}
+  .label{font-size:13px;font-weight:500;margin-bottom:8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);
+    background:#fff;color:var(--ink2);cursor:pointer;user-select:none;}
+  .chip.on{background:var(--info-bg);color:var(--info);border-color:#b5d4f4;}
+  .chip.off{background:#f0efec;color:var(--ink3);cursor:not-allowed;}
+  .row{display:flex;gap:10px;margin-top:12px;}
+  input[type=text]{flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    font-size:14px;font-family:inherit;background:#fff;}
+  button{padding:10px 18px;border:1px solid var(--line);border-radius:8px;background:#fff;
+    font-size:14px;font-family:inherit;cursor:pointer;}
+  button.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  .ans{border-left:3px solid var(--info);padding-left:14px;white-space:pre-wrap;}
+  .warn{background:var(--warn-bg);color:var(--warn);border-left:3px solid #ba7517;
+    padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin-bottom:12px;}
+  .refuse{background:#fcebeb;color:#a32d2d;border-left:3px solid #e24b4a;
+    padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin-bottom:12px;}
+  .cite{font-size:13px;color:var(--ink2);border-left:2px solid #b5d4f4;padding:6px 0 6px 10px;margin-top:8px;}
+  .video{display:flex;gap:12px;border:1px solid var(--line);border-radius:8px;padding:10px;
+    background:#fbfaf8;margin-top:12px;}
+  .thumb{flex:0 0 96px;height:56px;border-radius:6px;background:var(--info-bg);
+    display:flex;align-items:center;justify-content:center;}
+  .thumb svg{width:24px;height:24px;}
+  .vtitle{font-size:13px;font-weight:500;margin:0 0 3px;}
+  .vmeta{font-size:12px;color:var(--ink3);margin:0 0 6px;}
+  .jump{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;
+    background:var(--info-bg);color:var(--info);}
+  .trace{font-size:12px;color:var(--ink3);margin-top:12px;font-family:ui-monospace,Consolas,monospace;}
+  .muted{color:var(--ink3);font-size:12px;}
+  .empty{text-align:center;color:var(--ink3);font-size:13px;padding:24px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>高校实验室安全规程问答</h1>
+    <div class="sub">回答带出处 · 查不到就说不知道 · 高危操作附示范视频</div>
+  </header>
+
+  <div class="panel">
+    <div class="label">检索渠道</div>
+    <div class="chips" id="channels"><span class="muted">加载中…</span></div>
+  </div>
+
+  <div class="panel">
+    <div class="label">提问</div>
+    <div class="row">
+      <input type="text" id="q" placeholder="例如：浓硫酸溅到手上该怎么处理？">
+      <button class="primary" id="ask">提问</button>
+    </div>
+    <div class="row">
+      <input type="file" id="img" accept="image/*">
+      <button id="clear">清空图片</button>
+      <span class="muted" id="imgHint">可选：拍一张试剂瓶标签或警示标志</span>
+    </div>
+  </div>
+
+  <div class="panel" id="out">
+    <div class="empty">还没有提问。试试：「乙醚可以放在普通试剂柜里吗？」</div>
+  </div>
+</div>
+
+<script>
+let selected = new Set();
+let imageData = null;
+
+async function loadChannels() {
+  const box = document.getElementById('channels');
+  try {
+    const res = await fetch('/api/channels');
+    const data = await res.json();
+    box.innerHTML = '';
+    data.channels.forEach(c => {
+      const el = document.createElement('span');
+      el.className = 'chip' + (c.enabled ? '' : ' off');
+      el.textContent = c.enabled ? `${c.name} (${c.chunks})` : `${c.name} · 未开启`;
+      if (c.enabled) {
+        el.onclick = () => {
+          if (selected.has(c.name)) selected.delete(c.name); else selected.add(c.name);
+          el.classList.toggle('on');
+        };
+      } else {
+        el.title = c.note || '';
+      }
+      box.appendChild(el);
+    });
+  } catch (e) {
+    box.innerHTML = '<span class="muted">渠道加载失败，请确认服务已启动</span>';
+  }
+}
+
+document.getElementById('img').addEventListener('change', ev => {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    imageData = reader.result;
+    document.getElementById('imgHint').textContent = '已选择图片：' + file.name;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('clear').onclick = () => {
+  imageData = null;
+  document.getElementById('img').value = '';
+  document.getElementById('imgHint').textContent = '可选：拍一张试剂瓶标签或警示标志';
+};
+
+function esc(s) {
+  return (s || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+}
+
+async function ask() {
+  const q = document.getElementById('q').value.trim();
+  if (!q && !imageData) { alert('请输入问题，或先选择一张图片'); return; }
+
+  const out = document.getElementById('out');
+  const btn = document.getElementById('ask');
+  btn.disabled = true;
+  out.innerHTML = '<div class="empty">检索中…</div>';
+
+  try {
+    const res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({question: q, channels: [...selected], image: imageData})
+    });
+    const r = await res.json();
+    if (!res.ok) throw new Error(r.detail || '请求失败');
+    out.innerHTML = render(r);
+  } catch (e) {
+    out.innerHTML = `<div class="refuse">出错了：${esc(e.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function render(r) {
+  let html = '';
+
+  if (r.vision && !r.vision.ok && r.vision.message) {
+    html += `<div class="warn">${esc(r.vision.message)}</div>`;
+  }
+  (r.channels && r.channels.warnings || []).forEach(w => {
+    html += `<div class="warn">${esc(w)}</div>`;
+  });
+
+  html += `<div class="muted" style="margin-bottom:10px">渠道：${esc(r.channels?.display || '')}</div>`;
+
+  if (r.refused) {
+    html += `<div class="refuse">${esc(r.answer)}</div>`;
+  } else {
+    if (r.safety && r.safety.warning) html += `<div class="warn">${esc(r.safety.warning)}</div>`;
+    html += `<div class="ans">${esc(r.answer)}</div>`;
+
+    if (r.citations && r.citations.length) {
+      html += '<div style="margin-top:14px"><div class="label">依据来源</div>';
+      r.citations.forEach(c => {
+        html += `<div class="cite">[${c.index}] 《${esc(c.title)}》 ${esc(c.locator)}　渠道：${esc(c.channel)}</div>`;
+      });
+      html += '</div>';
+    }
+
+    if (r.video) {
+      const v = r.video;
+      html += `<div class="video">
+        <div class="thumb"><svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill="#185fa5"/></svg></div>
+        <div>
+          <p class="vtitle">${esc(v.title)}</p>
+          <p class="vmeta">时长 ${esc(v.duration)} · ${esc(v.source)} · 审核 ${esc(v.review_date)}</p>
+          ${v.jump_label ? `<span class="jump">${esc(v.jump_label)}</span>` : ''}
+          ${v.note ? `<p class="muted" style="margin:8px 0 0">${esc(v.note)}</p>` : ''}
+        </div>
+      </div>`;
+    }
+  }
+
+  const t = r.trace || {};
+  html += `<div class="trace">召回 ${t.recall ?? '-'} → 重排 ${t.rerank ?? '-'}　置信度 ${(r.confidence ?? 0).toFixed(2)}　模式 ${r.mode || '-'}　耗时 ${t.elapsed_ms ?? '-'}ms</div>`;
+  return html;
+}
+
+document.getElementById('ask').onclick = ask;
+document.getElementById('q').addEventListener('keydown', e => { if (e.key === 'Enter') ask(); });
+loadChannels();
+</script>
+</body>
+</html>

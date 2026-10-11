@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "note": "操作示范视频登记表（对应模块 M23 视频资源管理）。铁律：本表只登记经人工审核的权威素材，禁止任何 AI 生成视频进入。",
+  "warning": "以下条目均为 placeholder=true 的示例条目，审核人与审核日期为「示例」占位，仅用于跑通流程。正式提交前必须替换为真实已审核素材，或直接删除。",
+  "videos": [
+    {
+      "video_id": "v-acid-burn",
+      "title": "化学品灼伤应急处置示范",
+      "file": "data/videos/v-acid-burn.mp4",
+      "duration": "3:20",
+      "source": "某大学实验室管理处（示例）",
+      "reviewer": "示例审核人（待替换）",
+      "review_date": "示例-待替换",
+      "approved": true,
+      "placeholder": true,
+      "scene_tags": ["灼伤", "酸", "碱", "冲洗", "皮肤", "眼睛", "溅", "急救"],
+      "chapters": [
+        { "label": "危害识别", "start": 0 },
+        { "label": "冲洗步骤", "start": 45 },
+        { "label": "就医处理", "start": 130 }
+      ]
+    },
+    {
+      "video_id": "v-flammable-storage",
+      "title": "易燃液体规范存放示范",
+      "file": "data/videos/v-flammable-storage.mp4",
+      "duration": "2:45",
+      "source": "某大学实验室管理处（示例）",
+      "reviewer": "示例审核人（待替换）",
+      "review_date": "示例-待替换",
+      "approved": true,
+      "placeholder": true,
+      "scene_tags": ["易燃", "乙醚", "存放", "试剂柜", "防爆", "通风", "储存"],
+      "chapters": [
+        { "label": "柜体选择", "start": 0 },
+        { "label": "存放量与分区", "start": 60 },
+        { "label": "通风与禁火", "start": 105 }
+      ]
+    },
+    {
+      "video_id": "v-waste-liquid",
+      "title": "实验废液分类收集示范",
+      "file": "data/videos/v-waste-liquid.mp4",
+      "duration": "4:05",
+      "source": "某大学实验室管理处（示例）",
+      "reviewer": "示例审核人（待替换）",
+      "review_date": "示例-待替换",
+      "approved": true,
+      "placeholder": true,
+      "scene_tags": ["废液", "分类", "收集", "桶", "标签", "处置", "危废", "混合"],
+      "chapters": [
+        { "label": "分类原则", "start": 0 },
+        { "label": "标签填写", "start": 95 },
+        { "label": "移交暂存", "start": 180 }
+      ]
+    },
+    {
+      "video_id": "v-gas-cylinder",
+      "title": "气瓶固定与检漏示范",
+      "file": "data/videos/v-gas-cylinder.mp4",
+      "duration": "2:10",
+      "source": "某大学实验室管理处（示例）",
+      "reviewer": "示例审核人（待替换）",
+      "review_date": "示例-待替换",
+      "approved": true,
+      "placeholder": true,
+      "scene_tags": ["气瓶", "固定", "检漏", "减压阀", "明火", "可燃气体"],
+      "chapters": [
+        { "label": "直立固定", "start": 0 },
+        { "label": "分区存放", "start": 55 },
+        { "label": "检漏方法", "start": 100 }
+      ]
+    }
+  ]
+}

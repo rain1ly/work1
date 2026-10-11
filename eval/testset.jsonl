@@ -1,0 +1,15 @@
+{"question": "浓硫酸溅到手上，该怎么处理？", "expect": "answer", "ground_truth": "立即用大量流动清水持续冲洗不少于 15 分钟，边冲边脱去污染衣物；冲洗后用 5% 碳酸氢钠溶液轻敷中和残留酸液，随后立即送医。严禁直接用强碱中和皮肤上的强酸。", "channels": []}
+{"question": "碱液溅到皮肤上怎么办？", "expect": "answer", "ground_truth": "用大量流动清水冲洗 15 分钟以上，冲洗时间宜长不宜短；冲洗后可用 2% 硼酸溶液轻敷，出现灼痛起泡变白立即送医。", "channels": []}
+{"question": "化学品溅到眼睛里怎么冲洗？", "expect": "answer", "ground_truth": "立即使用洗眼器，翻开上下眼睑，用大量清水从内眼角向外眼角方向持续冲洗不少于 15 分钟，不要用中和液冲眼，冲洗后立即送医。", "channels": []}
+{"question": "乙醚可以放在普通试剂柜里吗？", "expect": "answer", "ground_truth": "不可以。乙醚属低闪点易燃液体，必须存放于防爆型易燃品柜，远离明火与热源并保持通风。", "channels": []}
+{"question": "易燃品柜里最多能放多少液体？", "expect": "answer", "ground_truth": "单一液体存放总量不得超过 20 升，整柜存放总量不得超过 50 升；强氧化剂与易燃液体严禁同柜混放。", "channels": []}
+{"question": "实验废液可以混着倒吗？", "expect": "answer", "ground_truth": "严禁混放。废液应按含卤有机、非卤有机、酸性、碱性、重金属分类收集；含卤有机废液与碱性废液严禁混合。", "channels": []}
+{"question": "废液桶标签要写什么？", "expect": "answer", "ground_truth": "必须注明主要成分、危险类别、入库日期、责任人；盛装量不超过容器容积的 80%，桶盖不得敞开。", "channels": []}
+{"question": "气瓶和明火要保持多远？", "expect": "answer", "ground_truth": "气瓶与明火作业点的距离不应小于 10 米；无法满足时应采取可靠隔离防护措施并经实验室安全责任人审批。", "channels": []}
+{"question": "气瓶应该怎么放置？", "expect": "answer", "ground_truth": "气瓶应直立放置并使用防倒链或卡箍固定，不得横卧；可燃气体与助燃气体分开存放，间距不小于 5 米。", "channels": []}
+{"question": "MSDS 里个体防护怎么看？", "expect": "answer", "ground_truth": "防护装备的选择应参照化学品安全技术说明书（MSDS/SDS）中个体防护章节的建议，不得凭经验替代。", "channels": []}
+{"question": "学校游泳池几点关门？", "expect": "refuse", "ground_truth": "超出知识库范围，应拒答。", "channels": []}
+{"question": "今天食堂吃什么？", "expect": "refuse", "ground_truth": "超出知识库范围，应拒答。", "channels": []}
+{"question": "怎么申请国家奖学金？", "expect": "refuse", "ground_truth": "超出知识库范围，应拒答。", "channels": []}
+{"question": "乙醚怎么存放？", "expect": "answer", "ground_truth": "存放于防爆型易燃品柜，远离明火与热源，保持通风。", "channels": ["本校文件"]}
+{"question": "废液分类有哪些类别？", "expect": "answer", "ground_truth": "含卤有机废液、非卤有机废液、酸性废液、碱性废液、重金属废液。", "channels": ["国家规范"]}

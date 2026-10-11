@@ -1,0 +1,22 @@
+# ===== 核心（最小可运行所需，安装后即可跑通全链路）=====
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+python-dotenv>=1.0
+numpy>=1.26
+jieba>=0.42.1
+
+# ===== 检索增强（可选，装上后自动启用，未装则走轻量降级实现）=====
+qdrant-client>=1.9          # 生产用向量库；未装则自动降级为本地 JSON 索引
+sentence-transformers>=2.7  # BGE-M3 向量化 / BGE-Reranker-v2 重排（体积较大）
+
+# ===== 文档解析（按需）=====
+pymupdf>=1.24               # PDF 解析
+python-docx>=1.1            # Word 解析
+openpyxl>=3.1               # Excel 解析
+# paddleocr>=2.7             # 扫描件 OCR（体积大，需要时再装）
+# paddlepaddle>=2.6
+
+# ===== 评估（M19）=====
+ragas>=0.1.9
+datasets>=2.19
